@@ -1,11 +1,10 @@
 package cleaner
 
-// Cleaner is useful to aggregate cleanup functions when a function
-// has multiple success / error exit conditions. Cleaner is especially
-// useful in functions / methods that open or acquire multiple
-// resources which must all be destroyed if an error is
-// reached. Cleaner is also useful when the 'defer' idiom would lead
-// to complicated code and error checking.
+// Cleaner is useful to aggregate cleanup functions when a function has multiple
+// success / error exit conditions. Cleaner is especially useful in functions /
+// methods that open or acquire multiple resources which must all be destroyed
+// if an error is reached. Cleaner is also useful when the 'defer' idiom would
+// lead to complicated code and error checking.
 //
 // Example:
 //
@@ -28,33 +27,32 @@ package cleaner
 //     return
 //   }
 type Cleaner struct {
-  closures []func()
+	closures []func()
 }
 
 // Add adds a new closure to this cleaner.
 func (d *Cleaner) Add(closure func()) {
-  d.closures = append(d.closures, closure)
+	d.closures = append(d.closures, closure)
 }
 
-// Ok removes all closures from this cleaner and returns a function
-// that runs all of those closures instead. This is typically used
-// when a function has completed successfully and the cleanup closures
-// should be returned to the caller.
+// Ok removes all closures from this cleaner and returns a function that runs
+// all of those closures instead. This is typically used when a function has
+// completed successfully and the cleanup closures should be returned to the
+// caller.
 func (d *Cleaner) Ok() func() {
-  closures := d.closures
-  d.closures = nil
+	closures := d.closures
+	d.closures = nil
 
-  return func() {
-    for i := len(closures) - 1; i >= 0; i-- {
-      closures[i]()
-    }
-  }
+	return func() {
+		for i := len(closures) - 1; i >= 0; i-- {
+			closures[i]()
+		}
+	}
 }
 
-// New returns a new cleaner and a cleanup function that must
-// eventually be called to call then cleanup closures (unless Ok is
-// called).
+// New returns a new cleaner and a cleanup function that must eventually be
+// called to run the all the cleanup closures (unless Ok is called).
 func New() (*Cleaner, func()) {
-  d := &Cleaner{nil /* closures */}
-  return d, func() { d.Ok()() }
+	d := &Cleaner{nil /* closures */}
+	return d, func() { d.Ok()() }
 }
