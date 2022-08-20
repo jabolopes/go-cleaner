@@ -2,12 +2,26 @@
 
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/jabolopes/go-cleaner)](https://pkg.go.dev/github.com/jabolopes/go-cleaner)
 
-Cleaner is useful to aggregate cleanup functions when a function has multiple success /
-error exit conditions. Cleaner is especially useful in functions / methods that open or
-acquire multiple resources which must all be destroyed if an error is reached. Cleaner is
-also useful when the 'defer' idiom would lead to complicated code and error checking.
+Cleaner is useful to aggregate cleanup functions when a function has multiple
+success / error exit conditions. Cleaner is especially useful in functions /
+methods that open or acquire multiple resources which must all be destroyed if
+an error is reached. Cleaner is also useful when the `defer` idiom would lead to
+complicated code and error checking.
 
-Example:
+## Installation
+
+```sh
+$ go get github.com/jabolopes/go-cleaner
+```
+
+You can use `go get -u` to update the package. If you are using Go modules, you
+can also just import the package and it will be automatically downloaded on the
+first compilation.
+
+## Examples
+
+Load a couple of resources without any resource leaks even if some resources
+fail to load:
 
 ```go
 func LoadFileAndTexture() (file *os.File, tex *sdl.Texture, clean func(), err error) {
@@ -30,8 +44,7 @@ func LoadFileAndTexture() (file *os.File, tex *sdl.Texture, clean func(), err er
 }
 ```
 
-Example:
-
+Load a game without any resource leaks even if some resources fail to load:
 
 ```go
 // LoadGame loads this game and returns a cleanup function, and either
