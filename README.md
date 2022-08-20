@@ -1,5 +1,7 @@
 # go-cleaner
 
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/jabolopes/go-cleaner)](https://pkg.go.dev/github.com/jabolopes/go-cleaner)
+
 Cleaner is useful to aggregate cleanup functions when a function has multiple success /
 error exit conditions. Cleaner is especially useful in functions / methods that open or
 acquire multiple resources which must all be destroyed if an error is reached. Cleaner is
